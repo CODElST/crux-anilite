@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import ScrollToTop from "./Functions/ScrollToTop";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import PrimaryRouting from "./PrimaryRouting";
+import { ThemeProvider } from "@mui/material";
+import "./Components/styles.css";
+import darkTheme from "./Styles/styles";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <BrowserRouter>
+        <ScrollToTop>
+          <div
+            style={{
+              background: darkTheme.palette.primary.background,
+              position: "absolute",
+              width: "100%",
+            }}
+          >
+            <Routes>
+              <Route path="/*" element={<PrimaryRouting />} />
+            </Routes>
+          </div>
+        </ScrollToTop>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
-
-export default App;

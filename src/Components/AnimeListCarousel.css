@@ -1,0 +1,33 @@
+.react-multiple-carousel__arrow--left {
+  left: -2px;
+  top: 0px;
+  height: 100%;
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.react-multiple-carousel__arrow--left:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.react-multiple-carousel__arrow--right {
+  right: 0px;
+  height: 100%;
+  top: 0px;
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.react-multiple-carousel__arrow--right:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+#listitems {
+  mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+}
+
+div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.css-n0sfnu-MuiGrid-root {
+  align-self: center;
+}
+
+div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.css-dafrga-MuiGrid-root {
+  align-self: center;
+}
