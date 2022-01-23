@@ -10,6 +10,7 @@ import { CustomGenreButton } from "./CustomButton";
 import colorGenerator from "../Functions/ColorGenerator";
 import { CustomDiv, CustomGenreDiv } from "./CustomDiv";
 import { PopularAnimeCarousel } from "./AnimeListCarousel";
+import { db } from "../IDB";
 
 const notToIncludeGenre = [
   "cars",
@@ -55,40 +56,59 @@ const notToIncludeGenre = [
 
 function TopAnimeList(props) {
   const webpage = useLocation();
-  const [genre, setGenre] = React.useState(null);
+  const [genre, setGenre] = React.useState([]);
   const handleClick = (name, event) => {
-    genre === null
+    genre == []
       ? setGenre(Array(name))
       : !genre.includes(name)
       ? setGenre(genre.concat(name))
       : setGenre(genre.filter((item) => item !== name));
   };
-  const genreList = useSelector((state) => state.genreList);
-  const { genres, error, loading } = genreList;
-  const animeList = useSelector((state) => state.animeList);
-  const { animes } = animeList;
-  const data = [...animes];
-  const dispatch = useDispatch();
+  // const genreList = useSelector((state) => state.genreList);
+  // const { genres, error, loading } = genreList;
+  // const animeList = useSelector((state) => state.animeList);
+  // const { animes } = animeList;
+  // const dispatch = useDispatch();
+
+  const [genres, setGenres] = React.useState([]);
+
+  const getGenre = async () => {
+    const data = await db.genre.toArray();
+    data.map((item) => console.log(item));
+    setGenres(data);
+  };
+
+  const [data, setData] = React.useState([]);
+
+  const getAnimeByGenre = async () => {
+    const data = await db.anime
+      .orderBy("rating")
+      .filter(({ genres }) => genre.every((i) => genres?.includes(i)))
+      .reverse()
+      .toArray();
+    setData(data);
+  };
 
   React.useEffect(() => {
-    if (genres.length === 0) {
-      dispatch(listGenres());
-    }
-    if (genre !== null) {
-      if (genre !== []) {
-        dispatch(listAnime("genre=" + genre.join("+")));
-      } else {
-        dispatch(listAnime());
-      }
-    }
-  }, [dispatch, genres.length]);
-  console.log(genre);
+    getAnimeByGenre(genre);
+    getGenre();
+  }, [genre]);
 
-  return loading === true ? (
-    <Loader />
-  ) : error ? (
-    <h1>Error: {error}</h1>
-  ) : (
+  // React.useEffect(() => {
+  //   if (genres.length === 0) {
+  //     dispatch(listGenres());
+  //   }
+  //   if (genre !== null) {
+  //     if (genre !== []) {
+  //       dispatch(listAnime("genre=" + genre.join("+")));
+  //     } else {
+  //       dispatch(listAnime());
+  //     }
+  //   }
+  // }, [dispatch, genres.length]);
+  // console.log(genre);
+
+  return (
     <>
       <Grid item xs={12} desktop={4}>
         <CustomDiv

@@ -17,6 +17,7 @@ import Loader from "./Loader";
 import { CustomTextButton, CustomIconButton } from "./CustomButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { CustomMenuModal } from "./CustomModal";
+import { addAnime } from "../IDB/animeStore/animeActions";
 
 export default function Navbar() {
   const location = useLocation();

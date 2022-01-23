@@ -19,21 +19,23 @@ import { useSelector } from "react-redux";
 import { CustomFilterModal, CustomGenreModal } from "../Components/CustomModal";
 import { CustomImg } from "../Components/AnimeListCarousel";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import { db } from "../IDB";
 
 function TopAnime() {
   const genreList = useSelector((state) => state.genreList);
   const { genres, error, loading } = genreList;
   const animeList = useSelector((state) => state.animeList);
   const { animes } = animeList;
-  const [age, setAge] = React.useState("");
+  const [filter, setFilter] = React.useState("rating");
+  const [data, setData] = React.useState([]);
   const [columns, setColumns] = React.useState(
     window.innerWidth > 600 ? (window.innerWidth > 1600 ? 5 : 4) : 3
   );
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setFilter(event.target.value);
   };
 
   const dataDisplay = () => {
@@ -43,9 +45,46 @@ function TopAnime() {
         : setColumns(4)
       : setColumns(3);
   };
+
+  const getAnimeByGenre = async () => {
+    const data =
+      filter !== "name_en"
+        ? await db.anime
+            .orderBy(filter)
+            .filter(({ genres }) => genre.every((i) => genres?.includes(i)))
+            .reverse()
+            .toArray()
+        : await db.anime
+            .orderBy(filter)
+            .filter(({ genres }) => genre.every((i) => genres?.includes(i)))
+            .toArray();
+    setData(data);
+  };
+
+  // const getAnimeByGenre = async () => {
+  //   const data = await db.anime
+  //     .where("genres")
+  //     .equals("Comedy")
+  //     .sortBy(filter);
+  //   setData(data);
+  //   console.log(data);
+  // };
+
+  const [genre, setGenre] = React.useState([]);
+  const handleClick = (name, event) => {
+    genre == []
+      ? setGenre(Array(name))
+      : !genre.includes(name)
+      ? setGenre(genre.concat(name))
+      : setGenre(genre.filter((item) => item !== name));
+  };
+  console.log("genre:", genre);
+
   React.useEffect(() => {
     window.addEventListener("resize", dataDisplay);
-  }, []);
+    getAnimeByGenre(genre);
+  }, [genre, filter]);
+
   return (
     <Grid container spacing={2} sx={{ padding: 4, mt: 6 }}>
       <Grid item xs={12} md={4}>
@@ -69,7 +108,7 @@ function TopAnime() {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={age}
+              value={filter}
               label="Filter By"
               onChange={handleChange}
               color="primary"
@@ -78,9 +117,9 @@ function TopAnime() {
                 fontSize: "1rem",
               }}
             >
-              <MenuItem value={10}>All</MenuItem>
-              <MenuItem value={20}>Ongoing</MenuItem>
-              <MenuItem value={30}>Completed</MenuItem>
+              <MenuItem value={"rating"}>Rating</MenuItem>
+              <MenuItem value={"started"}>Release</MenuItem>
+              <MenuItem value={"name_en"}>Title</MenuItem>
             </Select>
           </FormControl>
           <div>
@@ -90,17 +129,22 @@ function TopAnime() {
                 <CustomGenreButton
                   key={id}
                   variant="outlined"
+                  onClick={(event) => handleClick(item.name, event)}
                   style={{
-                    color: color,
+                    color:
+                      genre === null
+                        ? color
+                        : genre.includes(item.name)
+                        ? "black"
+                        : color,
                     borderColor: color,
-                    // background:
-                    //   genre === null
-                    //     ? "transparent"
-                    //     : genre.includes(item.name)
-                    //     ? color
-                    //     : "transparent",
+                    background:
+                      genre === null
+                        ? "transparent"
+                        : genre.includes(item.name)
+                        ? color
+                        : "transparent",
                   }}
-                  // onClick={(event) => handleClick(item.name, event)}
                 >
                   {item.name}
                 </CustomGenreButton>
@@ -130,7 +174,7 @@ function TopAnime() {
 
       <Grid item md={8}>
         <Grid container spacing={2} justifyContent={"center"} columns={columns}>
-          {animes.slice(0, 20).map((item, id) => (
+          {data.slice(0, 20).map((item, id) => (
             <Grid key={id} item xs={1}>
               <Link to={`/anime-about/${item.slug}`}>
                 <motion.div whileHover={{ scale: 1.03 }}>
