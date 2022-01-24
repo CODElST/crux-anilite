@@ -14,6 +14,7 @@ import AllAnime from "./Pages/AllAnime";
 import TopAnime from "./Pages/TopAnime";
 import Anime from "./Pages/Anime";
 import Character from "./Pages/Character";
+import SearchPage from "./Pages/SearchPage";
 import SkeletonLoading from "./Components/SkeletonLoading";
 import { bulkAddAnime } from "./IDB/animeStore/animeActions";
 import { bulkAddCharacters } from "./IDB/characterStore/characterActions";
@@ -65,6 +66,7 @@ export default function PrimaryRouting() {
             <Route path="character" element={<Character />}>
               <Route path=":characterSlug" element={<Character />} />
             </Route>
+            <Route path="search" element={<SearchPage />} />
           </Routes>
         </div>
         <Footer />

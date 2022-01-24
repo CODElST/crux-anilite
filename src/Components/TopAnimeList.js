@@ -1,9 +1,9 @@
 import { Button, Grid, Box } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { listGenres } from "../store/actions/genreActions";
-import { listAnime } from "../store/actions/animeActions";
+// import { useSelector, useDispatch } from "react-redux";
+// import { listGenres } from "../store/actions/genreActions";
+// import { listAnime } from "../store/actions/animeActions";
 import { useLocation } from "react-router";
 import Loader from "./Loader";
 import { CustomGenreButton } from "./CustomButton";

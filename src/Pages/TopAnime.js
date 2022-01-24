@@ -7,23 +7,149 @@ import {
   Select,
   Stack,
   Typography,
-  Box,
+  Modal,
+  Backdrop,
+  Fade,
 } from "@mui/material";
 import { CustomDiv } from "../Components/CustomDiv";
 import {
   CustomGenreButton,
   CustomOutlinedButton,
+  CustomTextButton,
+  CustomContainedButton,
 } from "../Components/CustomButton";
 import colorGenerator from "../Functions/ColorGenerator";
 import { useSelector } from "react-redux";
-import { CustomFilterModal, CustomGenreModal } from "../Components/CustomModal";
 import { CustomImg } from "../Components/AnimeListCarousel";
 import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import AddIcon from "@mui/icons-material/Add";
+
 import { db } from "../IDB";
 
 function TopAnime() {
+  function CustomFilterModal() {
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    return (
+      <div>
+        <CustomOutlinedButton aria-label="menu" onClick={handleOpen}>
+          <FilterAltIcon />
+          Filter
+        </CustomOutlinedButton>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={open}
+          onClose={handleClose}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 2000,
+          }}
+          sx={style.modal}
+        >
+          <Fade in={open}>
+            <Stack direction={"column"} spacing={1} sx={style.buttonGroup}>
+              <CustomTextButton
+                onClick={handleChange}
+                value={"rating"}
+                sx={{ color: filter === "rating" ? "primary.main" : null }}
+              >
+                Rating
+              </CustomTextButton>
+              <CustomTextButton
+                onClick={handleChange}
+                value={"started"}
+                sx={{ color: filter === "started" ? "primary.main" : null }}
+              >
+                Release
+              </CustomTextButton>
+              <CustomTextButton
+                onClick={handleChange}
+                value={"name_en"}
+                sx={{ color: filter === "name_en" ? "primary.main" : null }}
+              >
+                Title
+              </CustomTextButton>
+            </Stack>
+          </Fade>
+        </Modal>
+      </div>
+    );
+  }
+
+  function CustomGenreModal({ genres }) {
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    return (
+      <div>
+        <CustomOutlinedButton aria-label="menu" onClick={handleOpen}>
+          <AddIcon />
+          Genre
+        </CustomOutlinedButton>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={open}
+          onClose={handleClose}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 2000,
+          }}
+          sx={style.modal}
+        >
+          <Fade in={open}>
+            <div
+              style={{
+                padding: 16,
+                textAlign: "center",
+                overflowY: "scroll",
+                // display: "flex",
+                flex: 1,
+                height: window.innerHeight,
+              }}
+            >
+              {genres.map((item, id) => {
+                let color = colorGenerator();
+                return (
+                  <CustomGenreButton
+                    key={id}
+                    variant="outlined"
+                    onClick={(event) => handleClick(item.name, event)}
+                    style={{
+                      color:
+                        genre === null
+                          ? color
+                          : genre.includes(item.name)
+                          ? "black"
+                          : color,
+                      borderColor: color,
+                      background:
+                        genre === null
+                          ? "transparent"
+                          : genre.includes(item.name)
+                          ? color
+                          : "transparent",
+                    }}
+                  >
+                    {item.name}
+                  </CustomGenreButton>
+                );
+              })}
+            </div>
+          </Fade>
+        </Modal>
+      </div>
+    );
+  }
+
   const genreList = useSelector((state) => state.genreList);
   const { genres, error, loading } = genreList;
   const animeList = useSelector((state) => state.animeList);
@@ -78,7 +204,6 @@ function TopAnime() {
       ? setGenre(genre.concat(name))
       : setGenre(genre.filter((item) => item !== name));
   };
-  console.log("genre:", genre);
 
   React.useEffect(() => {
     window.addEventListener("resize", dataDisplay);
@@ -204,5 +329,21 @@ function TopAnime() {
     </Grid>
   );
 }
+
+const style = {
+  modal: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(0,0,0,0.8)",
+    height: window.innerHeight,
+    width: "100%",
+  },
+  buttonGroup: {
+    position: "absolute",
+    left: "50%",
+    top: "50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
 
 export default TopAnime;

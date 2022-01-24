@@ -18,6 +18,7 @@ import { CustomTextButton, CustomIconButton } from "./CustomButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { CustomMenuModal } from "./CustomModal";
 import { addAnime } from "../IDB/animeStore/animeActions";
+import SearchModal from "./SearchModal";
 
 export default function Navbar() {
   const location = useLocation();
@@ -154,9 +155,7 @@ export default function Navbar() {
               </Typography>
             </div>
             <Stack sx={{ marginLeft: "auto", marginRight: 0 }}>
-              <CustomIconButton aria-label="search">
-                <SearchIcon />
-              </CustomIconButton>
+              <SearchModal />
             </Stack>
           </Toolbar>
         </AppBar>
@@ -197,9 +196,7 @@ export default function Navbar() {
                 </Typography>
               </div>
               <Stack sx={{ marginLeft: "auto", marginRight: 0 }}>
-                <CustomIconButton aria-label="search">
-                  <SearchIcon />
-                </CustomIconButton>
+                <SearchModal />
               </Stack>
             </Toolbar>
           </AppBar>
