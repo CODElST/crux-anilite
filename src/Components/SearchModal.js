@@ -104,7 +104,7 @@ export default function SearchModal({ data }) {
         BackdropProps={{
           timeout: 1000,
         }}
-        sx={{ backgroundColor: "rgba(0,0,0,0.6)" }}
+        sx={{ backgroundColor: "rgba(0,0,0,0.85)" }}
       >
         <Fade>
           <>

@@ -10,6 +10,8 @@ function SkeletonLoading({ display }) {
         flexWrap: "wrap",
         justifyContent: "center",
         position: "absolute",
+        background: "#222222",
+        zIndex: 10,
       }}
     >
       {/* <Skeleton

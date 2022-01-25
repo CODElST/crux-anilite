@@ -5,7 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { listAnimeDetail } from "../store/actions/animeActions";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import Loader from "../Components/Loader";
+import SkeletonLoading from "../Components/SkeletonLoading";
+import Masonry from "@mui/lab/Masonry";
+import { CustomGenreButton } from "../Components/CustomButton";
+import {
+  AnimeCarousel,
+  EpisodeCarousel,
+} from "../Components/AnimeListCarousel";
 
 export default function Anime() {
   const [display, setDisplay] = React.useState(false);
@@ -18,6 +24,8 @@ export default function Anime() {
   let data = [...animes];
   const dispatch = useDispatch();
 
+  const [columns, setColumns] = React.useState(window.innerWidth > 740 ? 3 : 2);
+
   const [opacity, setOpacity] = React.useState(1);
   const listenScrollEvent = () => {
     if (window.scrollY > 5) {
@@ -29,116 +37,350 @@ export default function Anime() {
     }
   };
 
+  const masonryColumn = () => {
+    window.innerWidth > 740 ? setColumns(3) : setColumns(2);
+  };
+
   React.useEffect(() => {
     if (anime.slug !== animeSlug) {
       dispatch(listAnimeDetail(animeSlug));
     }
     setDisplay(true);
+    window.addEventListener("resize", masonryColumn);
+    return () => window.removeEventListener("resize", masonryColumn);
     window.addEventListener("scroll", listenScrollEvent);
     return () => window.removeEventListener("scroll", listenScrollEvent);
   }, [dispatch, animeSlug]);
 
   return loading === true ? (
-    <Loader />
+    <SkeletonLoading />
   ) : error ? (
     <h1>Error: {error}</h1>
   ) : (
     { display } && (
-      <motion.div
-        animate={{ opacity: [0, 1] }}
-        transition={{ delay: 0.3, duration: 0.5 }}
-      >
-        <Box sx={{ display: { xs: "none", md: "block" } }}>
-          <img
-            id="animeAboutCoverImageGradient"
-            src={anime.cover_image}
-            alt=""
+      <React.Fragment>
+        <div style={{ background: "#222222" }}>
+          <div
+            style={{
+              position: "fixed",
+              height: window.innerHeight,
+              width: window.innerWidth,
+              top: 0,
+              background: "#222222",
+              zIndex: 0,
+            }}
+          >
+            <Box
+              sx={{
+                display: { xs: "none", md: "block" },
+                width: "100%",
+                height: "100%",
+              }}
+            >
+              <img
+                id="animeAboutCoverImageGradient"
+                src={anime.cover_image}
+                alt=""
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  opacity: 0.5,
+                }}
+              />
+            </Box>
+            <Box
+              sx={{
+                overflowX: "hidden",
+                width: "100%",
+                height: "100%",
+                display: { xs: "block", md: "none" },
+              }}
+            >
+              <img
+                id="animeAboutCoverImageGradient"
+                src={anime.cover_image}
+                alt=""
+                style={{
+                  height: "100%",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  opacity: 0.5,
+                }}
+              />
+            </Box>
+          </div>
+          <Box
             style={{
               position: "relative",
-              height: window.innerHeight,
+              marginTop: "50vh",
+              transform: "translateY(-50%)",
               width: "100%",
-              opacity: 0.5,
+              zIndex: 1,
             }}
-          />
-        </Box>
-        <Grid
-          container
-          sx={{
-            padding: 2,
-            mt: 4,
-            top: { xs: "50vh", md: "-50vh" },
-            transform: "translateY(-50%)",
-            position: "relative",
-          }}
-        >
-          <Grid item xs={1} />
-          <Grid item xs={10} textAlign={"center"}>
-            <Typography
-              variant="h1"
-              color="primary"
-              sx={{ textShadow: "1px 1px 2px black" }}
-            >
-              {anime.name_en}
-            </Typography>
-          </Grid>
-          <Grid item xs={1} />
-
-          <Grid item xs={0} md={1} />
-          <Grid item xs={12} md={10} textAlign={"center"}>
-            <Typography
-              variant="body1"
-              color="secondary"
-              sx={{
-                textShadow: "1px 1px 2px black",
-                display: { xs: "none", md: "block" },
-              }}
-            >
-              {anime.about}
-            </Typography>
-          </Grid>
-          <Grid item xs={0} md={1} />
-        </Grid>
-        <div></div>
-
-        <div className="grid grid-cols-12 gap-4 relative top-40 mb-60 w-full ">
-          <div className="col-span-2" />
-          {/* <div className="col-span-3">
-            <img className="w-9/12" src={anime.poster_image} alt="" />
-          </div>
-          <div className="col-span-1" /> */}
-          <div
-            className="col-span-8 rounded-xl"
-            // style={{
-            //   backgroundImage:
-            //     "linear-gradient(to bottom, rgba(0,0,0,0.6)0%, rgba(0,0,0,0.3)70%, transparent)",
-            // }}
           >
-            <p
-              className="text-purple-500 font-roboto text-6xl font-bold"
-              style={{
-                textShadow: "2px 2px 5px black",
-                opacity: opacity,
-                letterSpacing: "1px",
+            <Grid
+              container
+              sx={{
+                padding: 2,
+                mt: 4,
+                // top: { xs: "-50vh", md: "-50vh" },
+                // transform: "translateY(-50%)",
+                position: "relative",
               }}
-            ></p>
+            >
+              <Grid item xs={1} />
+              <Grid item xs={10} textAlign={"center"}>
+                <Typography
+                  variant="h1"
+                  color="primary"
+                  sx={{ textShadow: "1px 1px 2px black" }}
+                >
+                  {anime.name_en}
+                </Typography>
+              </Grid>
+              <Grid item xs={1} />
 
-            <div className="col-span-2" />
-            <div className="col-span-2" />
-            <div className="col-span-8 rounded-xl" style={{ zIndex: 2 }}>
-              <div className="max-h-96 overflow-y-scroll" style={{ zIndex: 2 }}>
-                <p
-                  className="text-white font-roboto text-lg font-normal whitespace-pre-wrap "
-                  style={{
+              <Grid item xs={0} md={1} />
+              <Grid item xs={12} md={10} textAlign={"center"}>
+                <Typography
+                  variant="body1"
+                  color="secondary"
+                  sx={{
                     textShadow: "1px 1px 2px black",
-                    opacity: opacity,
-                    zIndex: 2,
+                    display: { xs: "none", md: "block" },
                   }}
-                ></p>
-              </div>
-            </div>
+                >
+                  {anime.about}
+                </Typography>
+              </Grid>
+              <Grid item xs={0} md={1} />
+            </Grid>
+          </Box>
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              backgroundImage:
+                "linear-gradient(to top, #222222 50%, transparent)",
+            }}
+          >
+            <Grid container spacing={2} sx={{ padding: 2 }}>
+              <Grid item xs={12} sm={3} md={3}>
+                <Box
+                  sx={{
+                    width: { xs: "40%", sm: "90%", md: "50%" },
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                  }}
+                >
+                  <img
+                    src={anime.poster_image}
+                    alt=""
+                    style={{ width: "100%", borderRadius: 8 }}
+                  />
+                </Box>
+                <div
+                  style={{
+                    position: "relative",
+                    marginTop: 8,
+                    textAlign: "center",
+                  }}
+                >
+                  {display &&
+                    anime.genres.map((item, id) => {
+                      return (
+                        <CustomGenreButton
+                          key={id}
+                          variant="outlined"
+                          color="secondary"
+                        >
+                          {item.name}
+                        </CustomGenreButton>
+                      );
+                    })}
+                </div>
+              </Grid>
+              <Grid item xs={12} sm={9} md={6}>
+                <Masonry columns={columns} spacing={1}>
+                  <Card
+                    sx={{ background: "#B847CB", padding: 2, borderRadius: 2 }}
+                  >
+                    <Typography variant="body1" color="secondary">
+                      English Name
+                    </Typography>
+                    <Typography variant="h3" color="secondary">
+                      {anime.name_en}
+                    </Typography>
+                  </Card>
+
+                  <Card
+                    sx={{ background: "#474CCB", padding: 2, borderRadius: 2 }}
+                  >
+                    <Typography variant="body1" color="secondary">
+                      Japanese Name
+                    </Typography>
+                    <Typography variant="h3" color="secondary">
+                      {anime.name_jp}
+                    </Typography>
+                  </Card>
+
+                  <Card
+                    sx={{ background: "#8D1697", padding: 2, borderRadius: 2 }}
+                  >
+                    <Typography variant="body1" color="secondary">
+                      Format
+                    </Typography>
+                    <Typography variant="h3" color="secondary">
+                      {anime.type}
+                    </Typography>
+                  </Card>
+                  <Card
+                    sx={{ background: "#AE4141", padding: 2, borderRadius: 2 }}
+                  >
+                    <Typography variant="body1" color="secondary">
+                      Status
+                    </Typography>
+                    <Typography variant="h3" color="secondary">
+                      {anime.is_completed ? "Completed" : "Ongoing"}
+                    </Typography>
+                  </Card>
+                  <Card
+                    sx={{ background: "#5400BE", padding: 2, borderRadius: 2 }}
+                  >
+                    <Typography variant="body1" color="secondary">
+                      Episodes
+                    </Typography>
+                    <Typography variant="h3" color="secondary">
+                      {anime.num_of_eps}
+                    </Typography>
+                  </Card>
+                  <Card
+                    sx={{ background: "#16973A", padding: 2, borderRadius: 2 }}
+                  >
+                    <Typography variant="body1" color="secondary">
+                      Aired
+                    </Typography>
+                    <Typography variant="h3" color="secondary">
+                      {anime.started === "1111-11-11"
+                        ? "Not yet Aired"
+                        : anime.started}
+                    </Typography>
+                  </Card>
+                  <Card
+                    sx={{ background: "#B88400", padding: 2, borderRadius: 2 }}
+                  >
+                    <Typography variant="body1" color="secondary">
+                      Studio
+                    </Typography>
+                    <Typography variant="h3" color="secondary">
+                      {anime.studio}
+                    </Typography>
+                  </Card>
+                  <Card
+                    sx={{ background: "#0AA2D2", padding: 2, borderRadius: 2 }}
+                  >
+                    <Typography variant="body1" color="secondary">
+                      Ended
+                    </Typography>
+                    <Typography variant="h3" color="secondary">
+                      {anime.ended === "1111-11-11"
+                        ? "Not yet Aired"
+                        : anime.ended}
+                    </Typography>
+                  </Card>
+
+                  <Card
+                    sx={{ background: "#FF0000", padding: 2, borderRadius: 2 }}
+                  >
+                    <Typography variant="body1" color="secondary">
+                      Rank
+                    </Typography>
+                    <Typography variant="h3" color="secondary">
+                      {anime.popularity_rank}
+                      <br />
+                      (All Anime)
+                    </Typography>
+                  </Card>
+                  <Card
+                    sx={{ background: "#38C8D1", padding: 2, borderRadius: 2 }}
+                  >
+                    <Typography variant="body1" color="secondary">
+                      Rating
+                    </Typography>
+                    <Typography variant="h3" color="secondary">
+                      {anime.rating}
+                    </Typography>
+                  </Card>
+
+                  <Card
+                    sx={{ background: "#5257D7", padding: 2, borderRadius: 2 }}
+                  >
+                    <Typography variant="body1" color="secondary">
+                      Age Rating
+                    </Typography>
+                    <Typography variant="h3" color="secondary">
+                      {anime.age_rating}
+                    </Typography>
+                  </Card>
+                  <Card
+                    sx={{ background: "#5257D7", padding: 2, borderRadius: 2 }}
+                  >
+                    <Typography variant="body1" color="secondary">
+                      Director
+                    </Typography>
+                    <Typography variant="h3" color="secondary">
+                      {anime.directors}
+                    </Typography>
+                  </Card>
+                  <Card
+                    sx={{ background: "#B88400", padding: 2, borderRadius: 2 }}
+                  >
+                    <Typography variant="body1" color="secondary">
+                      User Rating
+                    </Typography>
+                    <Typography variant="h3" color="secondary">
+                      99.99
+                    </Typography>
+                  </Card>
+                </Masonry>
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <Typography variant="h3" color="primary">
+                  Watched it yet?
+                </Typography>
+              </Grid>
+              <Box sx={{ padding: 2, display: { xs: "block", md: "none" } }}>
+                <Grid item xs={12}>
+                  <Typography variant="h2" color="primary">
+                    Summary
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body1" color="secondary">
+                    {anime.about}
+                  </Typography>
+                </Grid>
+              </Box>
+              <Grid item xs={12}>
+                <Typography variant="h2" color="primary">
+                  Episodes
+                </Typography>
+              </Grid>
+            </Grid>
+            {display && (
+              <EpisodeCarousel episode_summary={anime.episode_summary} />
+            )}
+            <Grid container spacing={2} sx={{ padding: 2 }}>
+              <Grid item xs={12}>
+                <Typography variant="h2" color="primary">
+                  Characters
+                </Typography>
+              </Grid>
+            </Grid>
+            {display && <AnimeCarousel data={anime.characters} />}
           </div>
         </div>
-      </motion.div>
+      </React.Fragment>
     )
   );
 }

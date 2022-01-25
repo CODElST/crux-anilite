@@ -301,7 +301,7 @@ function TopAnime() {
         <Grid container spacing={2} justifyContent={"center"} columns={columns}>
           {data.slice(0, 20).map((item, id) => (
             <Grid key={id} item xs={1}>
-              <Link to={`/anime-about/${item.slug}`}>
+              <Link to={`/anime/${item.slug}`}>
                 <motion.div whileHover={{ scale: 1.03 }}>
                   <CustomImg
                     id="listitems"
@@ -337,6 +337,7 @@ const style = {
     backgroundColor: "rgba(0,0,0,0.8)",
     height: window.innerHeight,
     width: "100%",
+    position: "absolute",
   },
   buttonGroup: {
     position: "absolute",

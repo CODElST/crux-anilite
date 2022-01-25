@@ -7,11 +7,12 @@ function Footer() {
   return (
     <div
       style={{
-        marginTop: 50,
+        // marginTop: 50,
         height: 300,
         width: "100%",
         backgroundColor: "black",
         color: "white",
+        position: "relative",
       }}
     >
       <Typography
