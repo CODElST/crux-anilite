@@ -7,11 +7,12 @@ import {
   CustomContainedButton,
 } from "./CustomButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Stack, Backdrop, Modal, Fade, Typography } from "@mui/material";
+import { Stack, Backdrop, Modal, Fade, Avatar } from "@mui/material";
 import { NavLink, useLocation, useSearchParams } from "react-router-dom";
 import colorGenerator from "../Functions/ColorGenerator";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import AddIcon from "@mui/icons-material/Add";
+import { firebaseSignOut } from "../Firebase/GoogleAuth";
 
 const style = {
   modal: {
@@ -105,6 +106,21 @@ function CustomMenuModal() {
             >
               <CustomTextButton> About Us </CustomTextButton>
             </NavLink>
+            {localStorage.getItem("user_uid") ? (
+              <NavLink
+                style={({ isActive }) => {
+                  return {
+                    background: isActive ? "#6C48C0" : "",
+                    borderRadius: 3,
+                    textAlign: "center",
+                    alignSelf: "center",
+                  };
+                }}
+                to="dashboard"
+              >
+                <CustomTextButton> Dash </CustomTextButton>
+              </NavLink>
+            ) : null}
           </Stack>
         </Fade>
       </Modal>
@@ -255,4 +271,50 @@ function CustomGenreModal({ genres }) {
   );
 }
 
-export { CustomMenuModal, CustomFilterModal, CustomGenreModal };
+function CustomLogoutModal() {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  return (
+    <div>
+      <Avatar
+        onClick={handleOpen}
+        src={localStorage.getItem("user_dp")}
+        sx={{ width: 36, height: 36 }}
+      />
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 2000,
+        }}
+        sx={style.modal}
+      >
+        <Fade in={open}>
+          <Stack direction={"column"} spacing={1} sx={style.buttonGroup}>
+            <CustomTextButton
+              onClick={function () {
+                firebaseSignOut();
+                setOpen(false);
+              }}
+            >
+              {" "}
+              Logout{" "}
+            </CustomTextButton>
+          </Stack>
+        </Fade>
+      </Modal>
+    </div>
+  );
+}
+export {
+  CustomMenuModal,
+  CustomFilterModal,
+  CustomGenreModal,
+  CustomLogoutModal,
+};

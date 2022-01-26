@@ -44,7 +44,11 @@ export default function SearchPage() {
 
   return filteredAnime.concat(filteredCharacter).length === 0 ? null : (
     <>
-      <Grid container spacing={2} sx={{ padding: 2, mt: 6 }}>
+      <Grid
+        container
+        spacing={2}
+        sx={{ padding: 2, mt: 6, minHeight: window.innerHeight - 300 }}
+      >
         <Grid item xs={12}>
           <Stack
             direction="row"

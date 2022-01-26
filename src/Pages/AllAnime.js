@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { listAnime } from "../store/actions/animeActions";
 import { ReactComponent as Hexagon } from "../Media/Hexagon.svg";
-import hexagon from "../Media/hexagon.png";
 
 const index = [
   "All",
@@ -132,7 +131,11 @@ export default function TopAnimePage() {
 
   return (
     <>
-      <Grid container spacing={2} sx={{ padding: 2, mt: 6 }}>
+      <Grid
+        container
+        spacing={2}
+        sx={{ padding: 2, mt: 6, minHeight: window.innerHeight - 300 }}
+      >
         <Grid item xs={12}>
           <Box
             sx={{
@@ -171,7 +174,7 @@ export default function TopAnimePage() {
               .slice((page - 1) * itemsPerPage, page * itemsPerPage)
               .map((item, id) => (
                 <>
-                  <Link to={`/anime-about/${item[1].slug}`}>
+                  <Link to={`/anime/${item[1].slug}`}>
                     <motion.div
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.99 }}
@@ -256,7 +259,7 @@ export default function TopAnimePage() {
               ))}
           </List>
         </Grid>
-        <Hexagon />
+        {/* <Hexagon /> */}
       </Grid>
     </>
   );

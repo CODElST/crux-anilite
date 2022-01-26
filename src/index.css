@@ -86,3 +86,7 @@ svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.MuiSelect-icon.MuiSelect-iconOutli
 #animeAboutCoverImageGradient {
   mask-image: linear-gradient(to bottom, black 0vh, transparent 100vh);
 }
+
+.MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.css-zvr5g7-MuiButtonBase-root-MuiTab-root {
+  color: white;
+}

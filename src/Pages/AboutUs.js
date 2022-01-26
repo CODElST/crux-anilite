@@ -13,6 +13,7 @@ const DisplayCard = (props) => {
     <motion.div
       animate={{ opacity: [0, 1] }}
       transition={{ delay: 0.3, duration: 1.5 }}
+      style={{ minHeight: window.innerHeight - 300 }}
     >
       <CustomDiv sx={{ my: 4, mx: 4, padding: 0, maxWidth: "500px" }}>
         <CardMedia

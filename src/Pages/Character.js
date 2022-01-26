@@ -45,7 +45,11 @@ function Character() {
   ) : (
     { display } && (
       <>
-        <Grid container spacing={2} sx={{ padding: 2, mt: 4 }}>
+        <Grid
+          container
+          spacing={2}
+          sx={{ padding: 2, mt: 4, minHeight: window.innerHeight - 300 }}
+        >
           <Grid item xs={12}>
             <CustomTextButton onClick={() => navigate(-1)}>
               <ArrowBackIcon /> Go Back

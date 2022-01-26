@@ -4,7 +4,7 @@ import { listAnime } from "./store/actions/animeActions";
 import { listCharacter } from "./store/actions/characterActions";
 import { listGenres } from "./store/actions/genreActions";
 import Loader from "./Components/Loader";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import ScrollToTop from "./Functions/ScrollToTop";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
@@ -15,6 +15,7 @@ import TopAnime from "./Pages/TopAnime";
 import Anime from "./Pages/Anime";
 import Character from "./Pages/Character";
 import SearchPage from "./Pages/SearchPage";
+import Dashboard from "./Pages/Dashboard";
 import SkeletonLoading from "./Components/SkeletonLoading";
 import { bulkAddAnime } from "./IDB/animeStore/animeActions";
 import { bulkAddCharacters } from "./IDB/characterStore/characterActions";
@@ -67,6 +68,11 @@ export default function PrimaryRouting() {
               <Route path=":characterSlug" element={<Character />} />
             </Route>
             <Route path="search" element={<SearchPage />} />
+            {localStorage.getItem("user_uid") ? (
+              <Route path="dashboard" element={<Dashboard />} />
+            ) : (
+              <Route path="dashboard" element={<Navigate to="/" replace />} />
+            )}
           </Routes>
         </div>
         <Footer />

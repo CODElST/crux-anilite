@@ -7,7 +7,7 @@ import {
   useScrollTrigger,
   CssBaseline,
   Slide,
-  Hidden,
+  Avatar,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import React from "react";
@@ -16,9 +16,11 @@ import { useLocation, NavLink } from "react-router-dom";
 import Loader from "./Loader";
 import { CustomTextButton, CustomIconButton } from "./CustomButton";
 import SearchIcon from "@mui/icons-material/Search";
-import { CustomMenuModal } from "./CustomModal";
+import { CustomMenuModal, CustomLogoutModal } from "./CustomModal";
 import { addAnime } from "../IDB/animeStore/animeActions";
 import SearchModal from "./SearchModal";
+import { signInWithFirebase, firebaseSignOut } from "../Firebase/GoogleAuth";
+import LoginIcon from "@mui/icons-material/Login";
 
 export default function Navbar() {
   const location = useLocation();
@@ -75,7 +77,7 @@ export default function Navbar() {
     </Typography>
   ) : (
     <>
-      <Box sx={{ flexGrow: 1, display: { xs: "none", md: "block" } }}>
+      <Box sx={{ flexGrow: 1, display: { xs: "none", lg: "block" } }}>
         <AppBar
           position="fixed"
           sx={{
@@ -130,6 +132,19 @@ export default function Navbar() {
               >
                 <CustomTextButton> About Us </CustomTextButton>
               </NavLink>
+              {localStorage.getItem("user_uid") ? (
+                <NavLink
+                  style={({ isActive }) => {
+                    return {
+                      background: isActive ? "rgba(139, 92, 246, 1)" : "",
+                      borderRadius: 3,
+                    };
+                  }}
+                  to="dashboard"
+                >
+                  <CustomTextButton> Dash </CustomTextButton>
+                </NavLink>
+              ) : null}
             </Stack>
             <div
               style={{
@@ -154,13 +169,29 @@ export default function Navbar() {
                 NI<span style={{ color: "#8B5CF6" }}>L</span>ITE
               </Typography>
             </div>
-            <Stack sx={{ marginLeft: "auto", marginRight: 0 }}>
+            <Stack
+              direction={"row"}
+              sx={{ marginLeft: "auto", marginRight: 0 }}
+            >
               <SearchModal />
+              {localStorage.getItem("user_name") ? (
+                <CustomTextButton onClick={firebaseSignOut}>
+                  <Avatar
+                    src={localStorage.getItem("user_dp")}
+                    sx={{ width: 36, height: 36, marginRight: 1 }}
+                  />
+                  Logout
+                </CustomTextButton>
+              ) : (
+                <CustomTextButton onClick={signInWithFirebase}>
+                  Login
+                </CustomTextButton>
+              )}
             </Stack>
           </Toolbar>
         </AppBar>
       </Box>
-      <Box sx={{ display: { xs: "block", md: "none" } }}>
+      <Box sx={{ display: { xs: "block", lg: "none" } }}>
         <CssBaseline />
         <HideOnScroll>
           <AppBar
@@ -195,8 +226,18 @@ export default function Navbar() {
                   NI<span style={{ color: "#8B5CF6" }}>L</span>ITE
                 </Typography>
               </div>
-              <Stack sx={{ marginLeft: "auto", marginRight: 0 }}>
+              <Stack
+                direction={"row"}
+                sx={{ marginLeft: "auto", marginRight: 0 }}
+              >
                 <SearchModal />
+                {localStorage.getItem("user_name") ? (
+                  <CustomLogoutModal />
+                ) : (
+                  <CustomIconButton onClick={signInWithFirebase}>
+                    <LoginIcon />
+                  </CustomIconButton>
+                )}
               </Stack>
             </Toolbar>
           </AppBar>

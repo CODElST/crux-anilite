@@ -211,7 +211,11 @@ function TopAnime() {
   }, [genre, filter]);
 
   return (
-    <Grid container spacing={2} sx={{ padding: 4, mt: 6 }}>
+    <Grid
+      container
+      spacing={2}
+      sx={{ padding: 4, mt: 6, minHeight: window.innerHeight - 300 }}
+    >
       <Grid item xs={12} md={4}>
         <CustomDiv sx={{ display: { xs: "none", md: "block" } }}>
           <FormControl

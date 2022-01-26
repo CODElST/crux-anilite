@@ -18,6 +18,7 @@ export default function HomePage() {
     <motion.div
       animate={{ opacity: [0, 1] }}
       transition={{ delay: 0.3, duration: 1.5 }}
+      style={{ minHeight: window.innerHeight - 300 }}
     >
       <HomePageCarousel />
 
