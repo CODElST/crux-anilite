@@ -90,3 +90,23 @@ svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.MuiSelect-icon.MuiSelect-iconOutli
 .MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.css-zvr5g7-MuiButtonBase-root-MuiTab-root {
   color: white;
 }
+
+.MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.css-1ya5uqp {
+  color: white;
+}
+
+#pagination > ul > li > button {
+  color: white;
+}
+
+#pagination > ul > li > button:hover {
+  background-color: #444;
+}
+
+#pagination > ul > li > .MuiPaginationItem-root {
+  color: white;
+}
+
+button.MuiButtonBase-root.MuiPaginationItem-root.MuiPaginationItem-page.MuiPaginationItem-outlined.MuiPaginationItem-outlinedPrimary.MuiPaginationItem-sizeLarge {
+  border: 1px solid #8b5cf6;
+}

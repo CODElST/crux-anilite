@@ -16,7 +16,7 @@ import Anime from "./Pages/Anime";
 import Character from "./Pages/Character";
 import SearchPage from "./Pages/SearchPage";
 import Dashboard from "./Pages/Dashboard";
-import SkeletonLoading from "./Components/SkeletonLoading";
+import { SkeletonLoading } from "./Components/SkeletonLoading";
 import { bulkAddAnime } from "./IDB/animeStore/animeActions";
 import { bulkAddCharacters } from "./IDB/characterStore/characterActions";
 import { bulkAddGenres } from "./IDB/genreStore/genreActions";

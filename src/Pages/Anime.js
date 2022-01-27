@@ -12,7 +12,7 @@ import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { listAnimeDetail } from "../store/actions/animeActions";
 import StarIcon from "@mui/icons-material/Star";
-import SkeletonLoading from "../Components/SkeletonLoading";
+import { AnimeSkeletonLoading } from "../Components/SkeletonLoading";
 import Masonry from "@mui/lab/Masonry";
 import {
   CustomGenreButton,
@@ -31,7 +31,6 @@ import {
   deleteNotInterestedFirebase,
   getUserAnimeDataFirebase,
 } from "../Firebase/Database";
-import { loggedIn } from "../Firebase/GoogleAuth";
 
 const labels = {
   0.5: "Useless",
@@ -137,7 +136,7 @@ export default function Anime(props) {
   }, [dispatch, animeSlug, anime.slug]);
 
   return loading === true ? (
-    <SkeletonLoading />
+    <AnimeSkeletonLoading />
   ) : error ? (
     <h1>Error: {error}</h1>
   ) : (

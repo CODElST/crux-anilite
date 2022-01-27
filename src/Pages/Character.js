@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import { Link, useNavigate } from "react-router-dom";
 import { CustomTextButton } from "../Components/CustomButton";
-import Loader from "../Components/Loader";
+import { CharacterSkeletonLoading } from "../Components/SkeletonLoading";
 
 function Character() {
   const [display, setDisplay] = React.useState(false);
@@ -39,7 +39,7 @@ function Character() {
   };
 
   return loading === true ? (
-    <Loader />
+    <CharacterSkeletonLoading />
   ) : error ? (
     <h1 style={{ color: "white" }}>Error: {error}</h1>
   ) : (

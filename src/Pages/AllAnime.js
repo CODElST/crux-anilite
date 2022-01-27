@@ -1,12 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { List, ListItem, Grid, Typography, Box } from "@mui/material";
+import {
+  List,
+  ListItem,
+  Grid,
+  Typography,
+  Box,
+  Pagination,
+} from "@mui/material";
 import { motion } from "framer-motion";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { listAnime } from "../store/actions/animeActions";
-import { ReactComponent as Hexagon } from "../Media/Hexagon.svg";
+
+import { SkeletonLoading } from "../Components/SkeletonLoading";
 
 const index = [
   "All",
@@ -40,10 +46,6 @@ const index = [
 ];
 
 export default function TopAnimePage() {
-  const dispatch = useDispatch();
-  // React.useEffect(() => {
-  //   dispatch(listAnime());
-  // }, [dispatch]);
   const [classname, setClassname] = React.useState("hexagonDivUnselected");
 
   const animeList = useSelector((state) => state.animeList);
@@ -62,14 +64,13 @@ export default function TopAnimePage() {
   const [page, setPage] = React.useState(1);
 
   const [noOfPages, setNoOfPages] = React.useState(
-    Math.ceil(50 / itemsPerPage)
+    Math.ceil(animes.length / itemsPerPage)
   );
 
   const [activeIndexID, setActiveIndexID] = React.useState(["All"]);
 
   const handleChange = (event, value) => {
     setPage(value);
-    dispatch(listAnime((value - 1) * 10));
     window.scrollTo(0, 0);
   };
 
@@ -129,7 +130,11 @@ export default function TopAnimePage() {
     };
   });
 
-  return (
+  return loading === true ? (
+    <SkeletonLoading />
+  ) : error ? (
+    <h1>Error: {error}</h1>
+  ) : (
     <>
       <Grid
         container
@@ -258,8 +263,20 @@ export default function TopAnimePage() {
                 </>
               ))}
           </List>
+          <Pagination
+            id="pagination"
+            count={10}
+            siblingCount={0}
+            boundaryCount={1}
+            page={page}
+            onChange={handleChange}
+            defaultPage={1}
+            variant="outlined"
+            color="primary"
+            size="medium"
+            sx={{ display: "flex", justifyContent: "center" }}
+          />
         </Grid>
-        {/* <Hexagon /> */}
       </Grid>
     </>
   );

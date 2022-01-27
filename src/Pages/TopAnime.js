@@ -10,6 +10,7 @@ import {
   Modal,
   Backdrop,
   Fade,
+  Pagination,
 } from "@mui/material";
 import { CustomDiv } from "../Components/CustomDiv";
 import {
@@ -160,8 +161,36 @@ function TopAnime() {
     window.innerWidth > 600 ? (window.innerWidth > 1600 ? 5 : 4) : 3
   );
 
+  const [itemsPerPage, setItemsPerPage] = React.useState(() => {
+    if (window.innerWidth >= 1900) {
+      return 10;
+    } else if ((window.innerWidth > 1600) & (window.innerWidth < 1900)) {
+      return 15;
+    } else if ((window.innerWidth > 1300) & (window.innerWidth <= 1600)) {
+      return 12;
+    } else if ((window.innerWidth >= 1180) & (window.innerWidth < 1300)) {
+      return 16;
+    } else if ((window.innerWidth >= 600) & (window.innerWidth < 1180)) {
+      return 20;
+    } else {
+      return 15;
+    }
+  });
+
+  const [page, setPage] = React.useState(1);
+
+  const [noOfPages, setNoOfPages] = React.useState(
+    Math.ceil(data.length / itemsPerPage)
+  );
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
+    window.scrollTo(0, 0);
+  };
+
   const handleChange = (event) => {
     setFilter(event.target.value);
+    setPage(1);
   };
 
   const dataDisplay = () => {
@@ -170,6 +199,20 @@ function TopAnime() {
         ? setColumns(5)
         : setColumns(4)
       : setColumns(3);
+
+    if (window.innerWidth >= 1900) {
+      setItemsPerPage(10);
+    } else if ((window.innerWidth > 1600) & (window.innerWidth < 1900)) {
+      setItemsPerPage(15);
+    } else if ((window.innerWidth > 1300) & (window.innerWidth <= 1600)) {
+      setItemsPerPage(12);
+    } else if ((window.innerWidth >= 1180) & (window.innerWidth < 1300)) {
+      setItemsPerPage(16);
+    } else if ((window.innerWidth >= 600) & (window.innerWidth < 1180)) {
+      setItemsPerPage(20);
+    } else {
+      setItemsPerPage(15);
+    }
   };
 
   const getAnimeByGenre = async () => {
@@ -185,16 +228,9 @@ function TopAnime() {
             .filter(({ genres }) => genre.every((i) => genres?.includes(i)))
             .toArray();
     setData(data);
+    setNoOfPages(Math.ceil(data.length / itemsPerPage));
+    setPage(1);
   };
-
-  // const getAnimeByGenre = async () => {
-  //   const data = await db.anime
-  //     .where("genres")
-  //     .equals("Comedy")
-  //     .sortBy(filter);
-  //   setData(data);
-  //   console.log(data);
-  // };
 
   const [genre, setGenre] = React.useState([]);
   const handleClick = (name, event) => {
@@ -303,32 +339,51 @@ function TopAnime() {
 
       <Grid item md={8}>
         <Grid container spacing={2} justifyContent={"center"} columns={columns}>
-          {data.slice(0, 20).map((item, id) => (
-            <Grid key={id} item xs={1}>
-              <Link to={`/anime/${item.slug}`}>
-                <motion.div whileHover={{ scale: 1.03 }}>
-                  <CustomImg
-                    id="listitems"
-                    src={
-                      item.poster_image ===
-                      "https://media.kitsu.io/anime/poster_images/41071/original.jpeg"
-                        ? "https://media.kitsu.io/anime/poster_images/13252/original.png?1597697512"
-                        : item.poster_image
-                    }
-                    alt={item.name_en}
-                  />
-                  <Typography
-                    variant="subtitle2"
-                    textAlign={"center"}
-                    color="secondary"
-                  >
-                    {id + 1}. {item.name_en}
-                  </Typography>
-                </motion.div>
-              </Link>
-            </Grid>
-          ))}
+          {data
+            .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+            .map((item, id) => (
+              <Grid key={id} item xs={1}>
+                <Link to={`/anime/${item.slug}`}>
+                  <motion.div whileHover={{ scale: 1.03 }}>
+                    <CustomImg
+                      id="listitems"
+                      src={
+                        item.poster_image ===
+                        "https://media.kitsu.io/anime/poster_images/41071/original.jpeg"
+                          ? "https://media.kitsu.io/anime/poster_images/13252/original.png?1597697512"
+                          : item.poster_image
+                      }
+                      alt={item.name_en}
+                    />
+                    <Typography
+                      variant="subtitle2"
+                      textAlign={"center"}
+                      color="secondary"
+                    >
+                      {data.indexOf(item) + 1}. {item.name_en}
+                    </Typography>
+                  </motion.div>
+                </Link>
+              </Grid>
+            ))}
         </Grid>
+        <Pagination
+          id="pagination"
+          count={noOfPages}
+          page={page}
+          siblingCount={0}
+          boundaryCount={1}
+          onChange={handlePageChange}
+          defaultPage={1}
+          variant="outlined"
+          color="primary"
+          size="medium"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: 4,
+          }}
+        />
       </Grid>
     </Grid>
   );
