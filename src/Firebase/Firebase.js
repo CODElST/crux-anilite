@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+
 const firebaseConfig = {
   apiKey: "AIzaSyBpr9cBmHMTA-2qdjOVzPRFd7iC8K4m7I4",
   authDomain: "anilite-crux.firebaseapp.com",

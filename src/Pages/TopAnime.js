@@ -17,7 +17,6 @@ import {
   CustomGenreButton,
   CustomOutlinedButton,
   CustomTextButton,
-  CustomContainedButton,
 } from "../Components/CustomButton";
 import colorGenerator from "../Functions/ColorGenerator";
 import { useSelector } from "react-redux";
@@ -26,7 +25,6 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import AddIcon from "@mui/icons-material/Add";
-
 import { db } from "../IDB";
 
 function TopAnime() {
@@ -152,9 +150,7 @@ function TopAnime() {
   }
 
   const genreList = useSelector((state) => state.genreList);
-  const { genres, error, loading } = genreList;
-  const animeList = useSelector((state) => state.animeList);
-  const { animes } = animeList;
+  const { genres } = genreList;
   const [filter, setFilter] = React.useState("rating");
   const [data, setData] = React.useState([]);
   const [columns, setColumns] = React.useState(
@@ -234,7 +230,7 @@ function TopAnime() {
 
   const [genre, setGenre] = React.useState([]);
   const handleClick = (name, event) => {
-    genre == []
+    genre === []
       ? setGenre(Array(name))
       : !genre.includes(name)
       ? setGenre(genre.concat(name))

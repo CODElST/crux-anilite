@@ -204,7 +204,6 @@ function CustomFilterModal() {
 function CustomGenreModal({ genres }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const parameter = searchParams.get("genre");
-  console.log(parameter);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

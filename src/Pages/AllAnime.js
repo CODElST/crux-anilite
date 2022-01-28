@@ -10,9 +10,7 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { useSelector } from "react-redux";
-
-import { SkeletonLoading } from "../Components/SkeletonLoading";
+import { db } from "../IDB";
 
 const index = [
   "All",
@@ -48,23 +46,23 @@ const index = [
 export default function TopAnimePage() {
   const [classname, setClassname] = React.useState("hexagonDivUnselected");
 
-  const animeList = useSelector((state) => state.animeList);
-  const { animes, error, loading } = animeList;
+  const [allAnime, setAllAnime] = React.useState([]);
+  const [data, setData] = React.useState([]);
+  const getAnimeData = async () => {
+    const data = await db.anime.orderBy("name_en").toArray();
+    setAllAnime(data);
+    setData(data);
+    setNoOfPages(Math.ceil(data.length / itemsPerPage));
+  };
 
-  const [data, setData] = React.useState(
-    animes.map((anime) => [anime.name_en, anime]).sort()
-  );
-
-  const completeList = [
-    ...animes.map((anime) => [anime.name_en, anime]).sort(),
-  ];
+  const completeList = [...allAnime];
 
   const itemsPerPage = 10;
 
   const [page, setPage] = React.useState(1);
 
   const [noOfPages, setNoOfPages] = React.useState(
-    Math.ceil(animes.length / itemsPerPage)
+    Math.ceil(data.length / itemsPerPage)
   );
 
   const [activeIndexID, setActiveIndexID] = React.useState(["All"]);
@@ -96,7 +94,7 @@ export default function TopAnimePage() {
       "0"
     ) {
       const filteredAnime = completeList.filter((item) => {
-        return item[1].name_en[0]
+        return item.name_en[0]
           .toLowerCase()
           .includes(event.currentTarget.innerText.toLowerCase());
       });
@@ -107,7 +105,7 @@ export default function TopAnimePage() {
     } else {
       const filteredAnime = completeList.filter((item) => {
         return ['".", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"'].some(
-          (el) => item[1].name_en[0].toLowerCase().includes(el)
+          (el) => item.name_en[0].toLowerCase().includes(el)
         );
       });
       setData(filteredAnime);
@@ -118,6 +116,9 @@ export default function TopAnimePage() {
     window.scrollTo(0, 0);
   };
   React.useEffect(() => {
+    if (allAnime.length === 0) {
+      getAnimeData();
+    }
     activeIndexID.map(
       (ID) => (document.getElementById(ID).style.backgroundColor = "#8B5CF6")
     );
@@ -128,13 +129,9 @@ export default function TopAnimePage() {
           : null
       );
     };
-  });
+  }, [activeIndexID]);
 
-  return loading === true ? (
-    <SkeletonLoading />
-  ) : error ? (
-    <h1>Error: {error}</h1>
-  ) : (
+  return (
     <>
       <Grid
         container
@@ -179,16 +176,16 @@ export default function TopAnimePage() {
               .slice((page - 1) * itemsPerPage, page * itemsPerPage)
               .map((item, id) => (
                 <>
-                  <Link to={`/anime/${item[1].slug}`}>
+                  <Link to={`/anime/${item.slug}`}>
                     <motion.div
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.99 }}
                       onMouseEnter={() =>
-                        (document.getElementById(item[1].slug).className =
+                        (document.getElementById(item.slug).className =
                           "hexagonDiv")
                       }
                       onMouseLeave={() =>
-                        (document.getElementById(item[1].slug).className =
+                        (document.getElementById(item.slug).className =
                           "hexagonDivUnselected")
                       }
                       className="tileDiv"
@@ -204,8 +201,8 @@ export default function TopAnimePage() {
                         }}
                       >
                         <img
-                          src={item[1].poster_image}
-                          alt={item[1].name_en}
+                          src={item.poster_image}
+                          alt={item.name_en}
                           style={{
                             maxHeight: "7rem",
                             borderRadius: 4,
@@ -223,7 +220,7 @@ export default function TopAnimePage() {
                             zIndex: 1,
                           }}
                         >
-                          {item[1].name_en}
+                          {item.name_en}
                         </Typography>
 
                         <motion.div
@@ -246,7 +243,7 @@ export default function TopAnimePage() {
                           />
                         </motion.div>
                         <div
-                          id={item[1].slug}
+                          id={item.slug}
                           className={classname}
                           style={{
                             position: "absolute",
@@ -265,7 +262,7 @@ export default function TopAnimePage() {
           </List>
           <Pagination
             id="pagination"
-            count={10}
+            count={noOfPages}
             siblingCount={0}
             boundaryCount={1}
             page={page}

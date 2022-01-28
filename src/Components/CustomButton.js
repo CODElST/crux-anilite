@@ -1,4 +1,3 @@
-import colorGenerator from "../Functions/ColorGenerator";
 import { Button, IconButton, styled } from "@mui/material";
 
 const CustomContainedButton = styled(Button)(({ theme }) => ({

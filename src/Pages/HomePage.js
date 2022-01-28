@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { CustomIconButton } from "../Components/CustomButton";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import TopAnimeList from "../Components/TopAnimeList";
-import ScrollAnimation from "react-animate-on-scroll";
+import { Link } from "react-router-dom";
 
 export default function HomePage() {
   const animeList = useSelector((state) => state.animeList);
@@ -29,9 +29,11 @@ export default function HomePage() {
           </Typography>
         </Grid>
         <Grid item xs={1}>
-          <CustomIconButton sx={{ float: "right" }}>
-            <ArrowForwardIcon />
-          </CustomIconButton>
+          <Link to="top-anime">
+            <CustomIconButton sx={{ float: "right" }}>
+              <ArrowForwardIcon />
+            </CustomIconButton>
+          </Link>
         </Grid>
       </Grid>
       <div style={{ marginLeft: 2 }}>
@@ -49,9 +51,11 @@ export default function HomePage() {
           </Typography>
         </Grid>
         <Grid item xs={1}>
-          <CustomIconButton sx={{ float: "right" }}>
-            <ArrowForwardIcon />
-          </CustomIconButton>
+          <Link to="top-anime">
+            <CustomIconButton sx={{ float: "right" }}>
+              <ArrowForwardIcon />
+            </CustomIconButton>
+          </Link>
         </Grid>
       </Grid>
       <Grid container spacing={2}>
@@ -65,14 +69,19 @@ export default function HomePage() {
           </Typography>
         </Grid>
         <Grid item xs={1}>
-          <CustomIconButton sx={{ float: "right" }}>
-            <ArrowForwardIcon />
-          </CustomIconButton>
+          <Link to="top-anime">
+            <CustomIconButton sx={{ float: "right" }}>
+              <ArrowForwardIcon />
+            </CustomIconButton>
+          </Link>
         </Grid>
       </Grid>
-      <div style={{ marginLeft: 2 }}>
+      <div style={{ marginLeft: 2, marginBottom: 16 }}>
         <AnimeCarousel
           data={data
+            .filter((value) => {
+              return value.type.includes("Anime (MOVIE)");
+            })
             .sort((a, b) => (a.started < b.started ? 1 : -1))
             .slice(0, 15)}
         />

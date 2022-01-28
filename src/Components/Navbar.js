@@ -11,24 +11,16 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 import React from "react";
-import { useSelector } from "react-redux";
 import { useLocation, NavLink } from "react-router-dom";
 import Loader from "./Loader";
 import { CustomTextButton, CustomIconButton } from "./CustomButton";
-import SearchIcon from "@mui/icons-material/Search";
 import { CustomMenuModal, CustomLogoutModal } from "./CustomModal";
-import { addAnime } from "../IDB/animeStore/animeActions";
 import SearchModal from "./SearchModal";
 import { signInWithFirebase, firebaseSignOut } from "../Firebase/GoogleAuth";
 import LoginIcon from "@mui/icons-material/Login";
 
 export default function Navbar() {
   const location = useLocation();
-  const animeList = useSelector((state) => state.animeList);
-  const { animes, error, loading } = animeList;
-
-  const characterList = useSelector((state) => state.characterList);
-  const { characters } = characterList;
 
   const [navbarOpacity, setNavbarOpacity] = React.useState(0);
   const listenScrollEvent = () => {
@@ -69,13 +61,7 @@ export default function Navbar() {
     window: PropTypes.func,
   };
 
-  return loading === true ? (
-    <Loader />
-  ) : error ? (
-    <Typography variant="h1" color="primary" sx={{ textAlign: "center" }}>
-      Error: {error}
-    </Typography>
-  ) : (
+  return (
     <>
       <Box sx={{ flexGrow: 1, display: { xs: "none", lg: "block" } }}>
         <AppBar

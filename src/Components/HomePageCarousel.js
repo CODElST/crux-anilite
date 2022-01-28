@@ -18,7 +18,7 @@ export default function HomePageCarousel() {
     <div id="homepageCarousel">
       <Carousel fade pause={false}>
         <Carousel.Item>
-          <Link to={"/anime-about/re-zero-kara-hajimeru-isekai-seikatsu"}>
+          <Link to={"/anime/re-zero-kara-hajimeru-isekai-seikatsu"}>
             <CarouselImg
               src="https://i.pinimg.com/originals/31/4e/9a/314e9a89ae515e47879bcb8198ccfa76.png"
               alt="Re:Zero"
@@ -34,7 +34,7 @@ export default function HomePageCarousel() {
           </Link>
         </Carousel.Item>
         <Carousel.Item>
-          <Link to={"/anime-about/steins-gate"}>
+          <Link to={"/anime/steins-gate"}>
             <CarouselImg
               id="listitems"
               src="https://wallpapercave.com/wp/wp1858907.png"
@@ -48,7 +48,7 @@ export default function HomePageCarousel() {
           </Link>
         </Carousel.Item>
         <Carousel.Item>
-          <Link to={"/anime-about/mirai-nikki-tv"}>
+          <Link to={"/anime/mirai-nikki-tv"}>
             <CarouselImg
               src="https://images.alphacoders.com/902/902431.jpeg"
               alt="Future Diary"
@@ -62,7 +62,7 @@ export default function HomePageCarousel() {
           </Link>
         </Carousel.Item>
         <Carousel.Item>
-          <Link to={"/anime-about/kakegurui"}>
+          <Link to={"/anime/kakegurui"}>
             <CarouselImg
               src="https://images6.alphacoders.com/860/thumb-1920-860275.png"
               alt="Kakegurui"
@@ -76,7 +76,7 @@ export default function HomePageCarousel() {
           </Link>
         </Carousel.Item>
         <Carousel.Item>
-          <Link to={"/anime-about/elfen-lied"}>
+          <Link to={"/anime/elfen-lied"}>
             <CarouselImg
               src="https://i.pinimg.com/originals/68/26/cf/6826cf7624a62cf998978c64be29193f.png"
               alt="Elfen Lied"
@@ -90,7 +90,7 @@ export default function HomePageCarousel() {
           </Link>
         </Carousel.Item>
         <Carousel.Item>
-          <Link to={"/anime-about/charlotte"}>
+          <Link to={"/anime/charlotte"}>
             <CarouselImg
               src="https://wallpaperaccess.com/full/6245397.jpg"
               alt="Charlotte"
@@ -104,7 +104,7 @@ export default function HomePageCarousel() {
           </Link>
         </Carousel.Item>
         <Carousel.Item>
-          <Link to={"/anime-about/youjo-senki"}>
+          <Link to={"/anime/youjo-senki"}>
             <CarouselImg
               src="https://wallpaperaccess.com/full/1476027.png"
               alt="Saga of Tanya the Evil"

@@ -6,7 +6,6 @@ import {
   Modal,
   Box,
   Typography,
-  Stack,
   Input,
   ListItem,
 } from "@mui/material";
@@ -71,7 +70,6 @@ export default function SearchModal({ data }) {
   };
 
   const getAnimeBySearch = async (key) => {
-    console.log(key);
     const data = await db.anime
       .orderBy("name_en")
       .filter(({ name_en }) =>

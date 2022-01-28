@@ -1,6 +1,5 @@
 import { db } from "./Firebase";
 import {
-  addDoc,
   collection,
   setDoc,
   doc,
@@ -9,24 +8,13 @@ import {
   arrayRemove,
   getDocs,
   deleteDoc,
-  collectionGroup,
   query,
-  where,
+  collectionGroup,
 } from "firebase/firestore";
 
 const user = localStorage.getItem("user_uid");
 export async function addWatchedFirebase(anime, rating) {
   try {
-    // const data = { anime: anime, rating: rating ? rating : null };
-    // const docRef = await doc(db, `users/${user}`);
-    // setDoc(
-    //   docRef,
-    //   {
-    //     watched: arrayUnion(data),
-    //   },
-    //   { merge: true }
-    // );
-
     const docRef = await doc(db, `users/${user}/watched/${anime}`);
     setDoc(
       docRef,
@@ -35,9 +23,6 @@ export async function addWatchedFirebase(anime, rating) {
       },
       { merge: true }
     );
-
-    const readData = await getDocs(collection(db, `users/${user}/watched`));
-    readData.forEach((item) => console.log(item.id, item.data()));
   } catch (e) {
     console.error("Error adding document: ", e);
   }
@@ -136,17 +121,3 @@ export async function getUserAnimeDataFirebase() {
     console.error("Error adding document: ", e);
   }
 }
-// export async function getRating(anime) {
-//   try {
-//     const museums = query(
-//       collectionGroup(db, "watched"),
-//       where("rating", "!=", null)
-//     );
-//     const querySnapshot = await getDocs(museums);
-//     querySnapshot.forEach((doc) => {
-//       console.log(doc.id, " => ", doc.data());
-//     });
-//   } catch (e) {
-//     console.error("Error adding document: ", e);
-//   }
-// }

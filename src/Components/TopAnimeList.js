@@ -1,11 +1,6 @@
-import { Button, Grid, Box } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
-// import { useSelector, useDispatch } from "react-redux";
-// import { listGenres } from "../store/actions/genreActions";
-// import { listAnime } from "../store/actions/animeActions";
 import { useLocation } from "react-router";
-import Loader from "./Loader";
 import { CustomGenreButton } from "./CustomButton";
 import colorGenerator from "../Functions/ColorGenerator";
 import { CustomDiv, CustomGenreDiv } from "./CustomDiv";
@@ -74,7 +69,6 @@ function TopAnimeList(props) {
 
   const getGenre = async () => {
     const data = await db.genre.toArray();
-    data.map((item) => console.log(item));
     setGenres(data);
   };
 
@@ -93,20 +87,6 @@ function TopAnimeList(props) {
     getAnimeByGenre(genre);
     getGenre();
   }, [genre]);
-
-  // React.useEffect(() => {
-  //   if (genres.length === 0) {
-  //     dispatch(listGenres());
-  //   }
-  //   if (genre !== null) {
-  //     if (genre !== []) {
-  //       dispatch(listAnime("genre=" + genre.join("+")));
-  //     } else {
-  //       dispatch(listAnime());
-  //     }
-  //   }
-  // }, [dispatch, genres.length]);
-  // console.log(genre);
 
   return (
     <>

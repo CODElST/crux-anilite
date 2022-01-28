@@ -19,7 +19,6 @@ export default function SearchPage() {
   const [filteredCharacter, setFilteredCharacter] = React.useState([]);
 
   const getAnimeBySearch = async (key) => {
-    console.log(key);
     const data = await db.anime
       .orderBy("name_en")
       .filter(({ name_en }) =>

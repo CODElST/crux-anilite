@@ -13,7 +13,6 @@ import { CharacterSkeletonLoading } from "../Components/SkeletonLoading";
 function Character() {
   const [display, setDisplay] = React.useState(false);
   let { characterSlug } = useParams();
-  console.log(characterSlug);
   const characterDetail = useSelector((state) => state.characterDetail);
   const { character, error, loading } = characterDetail;
 
@@ -78,7 +77,7 @@ function Character() {
             />
             {display &&
               character.anime.map((anime, key) => (
-                <Link key={key} to={`/anime-about/${anime.slug}`}>
+                <Link key={key} to={`/anime/${anime.slug}`}>
                   <Typography variant="subtitle1" color="primary">
                     {anime.name}
                   </Typography>

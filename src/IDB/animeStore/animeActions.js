@@ -13,10 +13,8 @@ export async function getAnimeByGenre(genre) {
     .orderBy("name_jp")
     .filter(({ num_of_eps }) => num_of_eps === 1)
     .toArray();
-  data?.map((item) => console.log(item));
 }
 
 export async function getAnimeBySlug(slug) {
   const data = await db.anime.where("slug").equals("haikyuu");
-  data?.map((item) => console.log(item));
 }

@@ -14,10 +14,7 @@ import { listAnimeDetail } from "../store/actions/animeActions";
 import StarIcon from "@mui/icons-material/Star";
 import { AnimeSkeletonLoading } from "../Components/SkeletonLoading";
 import Masonry from "@mui/lab/Masonry";
-import {
-  CustomGenreButton,
-  CustomTextButton,
-} from "../Components/CustomButton";
+import { CustomGenreButton } from "../Components/CustomButton";
 import {
   AnimeCarousel,
   EpisodeCarousel,
@@ -421,16 +418,6 @@ export default function Anime(props) {
                       {anime.directors}
                     </Typography>
                   </Card>
-                  <Card
-                    sx={{ background: "#B88400", padding: 2, borderRadius: 2 }}
-                  >
-                    <Typography variant="body1" color="secondary">
-                      User Rating
-                    </Typography>
-                    <Typography variant="h3" color="secondary">
-                      99.99
-                    </Typography>
-                  </Card>
                 </Masonry>
               </Grid>
               <Grid item xs={12} md={3} sx={{ textAlign: "center" }}>
@@ -507,7 +494,6 @@ export default function Anime(props) {
                         </Box>
                       )}
                     </Stack>
-                    {animedata && console.log(status)}
                   </>
                 ) : null}
               </Grid>

@@ -10,7 +10,6 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Link } from "react-router-dom";
 import { getUserAnimeDataFirebase } from "../Firebase/Database";
 import { db } from "../IDB";
-import { ReactComponent as UndrawVoid } from "../Media/UndrawVoid.svg";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
