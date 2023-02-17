@@ -5,6 +5,9 @@ import PrimaryRouting from "./PrimaryRouting";
 import { ThemeProvider } from "@mui/material";
 import "./Components/styles.css";
 import darkTheme from "./Styles/styles";
+import Login from "./Pages/Login";
+import Register from "./Pages/Register";
+import ForgotPassword from "./Pages/ForgotPassword";
 
 export default function App() {
   return (
@@ -19,6 +22,9 @@ export default function App() {
             }}
           >
             <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/*" element={<PrimaryRouting />} />
             </Routes>
           </div>

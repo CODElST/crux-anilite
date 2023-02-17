@@ -20,6 +20,9 @@ import { SkeletonLoading } from "./Components/SkeletonLoading";
 import { bulkAddAnime } from "./IDB/animeStore/animeActions";
 import { bulkAddCharacters } from "./IDB/characterStore/characterActions";
 import { bulkAddGenres } from "./IDB/genreStore/genreActions";
+import Register from "./Pages/Register";
+import Login from "./Pages/Login";
+import UserDash from "./Pages/UserDash";
 
 export default function PrimaryRouting() {
   const dispatch = useDispatch();
@@ -58,7 +61,7 @@ export default function PrimaryRouting() {
         <div>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="about-us" element={<AboutUs />} />
+            <Route path="about-us" element={<Login />} />
             <Route path="all-anime" element={<AllAnime />} />
             <Route path="top-anime" element={<TopAnime />} />
             <Route path="anime" element={<Anime />}>
@@ -68,6 +71,7 @@ export default function PrimaryRouting() {
               <Route path=":characterSlug" element={<Character />} />
             </Route>
             <Route path="search" element={<SearchPage />} />
+            <Route path="dash" element={<UserDash />} />
             {localStorage.getItem("user_uid") ? (
               <Route path="dashboard" element={<Dashboard />} />
             ) : (

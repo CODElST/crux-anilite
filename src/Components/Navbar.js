@@ -169,9 +169,9 @@ export default function Navbar() {
                   Logout
                 </CustomTextButton>
               ) : (
-                <CustomTextButton onClick={signInWithFirebase}>
-                  Login
-                </CustomTextButton>
+                <NavLink to="/login">
+                  <CustomTextButton>Login</CustomTextButton>
+                </NavLink>
               )}
             </Stack>
           </Toolbar>

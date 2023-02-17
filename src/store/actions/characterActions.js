@@ -13,7 +13,7 @@ export const listCharacter = (param) => async (dispatch) => {
   try {
     dispatch({ type: CHARACTER_LIST_REQUEST });
     const data = await axios.get(
-      `https://anilite-api-v1.herokuapp.com/api/character/?limit=1500&${param}`
+      `${process.env.REACT_APP_ROOT_URL}/api/character/?limit=1500&${param}`
     );
     dispatch({ type: CHARACTER_LIST_SUCCESS, payload: data });
   } catch (error) {
@@ -25,7 +25,7 @@ export const listCharacterDetail = (slug) => async (dispatch) => {
   try {
     dispatch({ type: CHARACTER_DETAIL_REQUEST });
     const data = await axios.get(
-      `https://anilite-api-v1.herokuapp.com/api/character/${slug}`
+      `${process.env.REACT_APP_ROOT_URL}/api/character/${slug}`
     );
     dispatch({ type: CHARACTER_DETAIL_SUCCESS, payload: data.data });
   } catch (error) {
